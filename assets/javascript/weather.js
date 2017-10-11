@@ -2,9 +2,10 @@
 
 
 $('body').on("click", "#submit", function(){
-	var APIKey = "166a433c57516f51dfab1f7edaed8413";
 
-	var cityName = $("#search").val().trim();
+	  var APIKey = "166a433c57516f51dfab1f7edaed8413";
+
+	  var cityName = $("#search").val().trim();
 
     var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" +
       "q=" + cityName + "&units=imperial&mode=json&appid=" + APIKey;
@@ -12,7 +13,7 @@ $('body').on("click", "#submit", function(){
 
 
 
-  	$.ajax({
+  	$.getJSON({
         url: queryURL,
         method: "GET"
       })
@@ -20,13 +21,23 @@ $('body').on("click", "#submit", function(){
       .done(function(response) {
 
 
-        console.log(queryURL);
-        console.log(response);
 
+
+        for (var i = 0; i < 39; i= i+8) {
+            
+            console.log(queryURL);
+            console.log(response);
+        
+            console.log("Forecast in " + response.city.name );
+            console.log("Date of Forecast is " + response.list[i].dt_txt );
+            console.log("Temp is " + response.list[i].main.temp );
+            console.log("Weather is " + response.list[i].weather[0].description );
+
+         }
       
-       	console.log("Forecast in " + response.city.name );
-       	console.log("Date of Forecast is " + response.list[0].dt_txt );
-       	console.log("Temp is " + response.list[0].main.temp );
+       	// console.log("Forecast in " + response.city.name );
+       	// console.log("Date of Forecast is " + response.list[0].dt_txt );
+       	// console.log("Temp is " + response.list[0].main.temp );
 
       });
 });
