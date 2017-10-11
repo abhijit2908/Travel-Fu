@@ -5,8 +5,19 @@
 	<title>Document</title>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">    
+    <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Added a comment, going to be firebase -->
+
+    
+ 
+
+    <!--Added skycons for weather-->
+    <script src="https://rawgithub.com/darkskyapp/skycons/master/skycons.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+
+
 </head>
 <body>
 
@@ -32,7 +43,7 @@
      	<div class="col-md-6">
      		<div class="row">
      			<input type="text" id="search" placeholder="cityName">
-     			<button type="button">Submit</button>
+     			<button type="button" id="submit" class="btn btn-default btn-primary">Submit</button>
      		</div>
 
      		<div class="row">Maps</div>
@@ -49,9 +60,9 @@
                 	</div>
                 </div>
                 <div class="col-md-2">
-                    <button id="today" type="button">This Day</button>
-                    <button id="seven" type="button">Past Week</button>
-                    <button id="month" type="button">Last Month</button>
+                    <button id="today" class="btn btn-default btn-primary" type="button">Day</button>
+                    <button id="seven" class="btn btn-default btn-primary" type="button">Week</button>
+                    <button id="month" class="btn btn-default btn-primary" type="button">Month</button>
                 </div>
                 <div id="pages">push pages into </div>
      		</div>
@@ -61,11 +72,24 @@
      	<div class="col-md-3">
      	
      		<div class="panel panel-primary">
-            		<div class="panel-heading">
-              			<h3 class="panel-title"><strong>login</strong></h3>
-            		</div>
+
+        		<div class="panel-heading">
+          			<h3 class="panel-title"><strong>login</strong></h3>
+        		</div>
             	
-            	<div class="panel-body"></div>
+            	<div class="panel-body">
+                    <input id="userEmail" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
+                    <br>
+                    <input id="userPassword" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
+                    <br>
+                    <span class="input-group-addon">
+                        <input id="newUser" type="checkbox" aria-label="...">New User
+                    </span>
+                    <br>
+                    <span class="input-group-btn">
+                        <button id="userLogin" class="btn btn-default" type="button">Login</button>
+                    </span>   
+                </div>
         	</div>
 			
      		
@@ -74,7 +98,17 @@
               			<h3 class="panel-title"><strong>Weather</strong></h3>
             		</div>
             	
-            	<div class="panel-body"></div>
+            	<div class="panel-body">
+                    <div class="row">
+                        <div id="temp">Temp</div>
+                     </div>
+                    <div class="row">
+                    <div id="weatherDesc">weatherDesc</div>
+                        <div class="col-md-12 animated-icon">
+                        Animated Icon
+                        </div>
+                    </div>
+                </div>
         	</div>
 
 				
@@ -90,6 +124,14 @@
 
 
 </div>
-	
+
+<script src="assets/javascript/weather.js"></script>
+
+
+<script src="assets/javascript/firebase.js"></script>
+
+
+<script src="assets/javascript/news.js"></script>
+
 </body>
 </html>
