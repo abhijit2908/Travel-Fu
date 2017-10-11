@@ -2,11 +2,7 @@ var authKey = "b9f91d369ff59547cd47b931d8cbc56b:0:74623931";
 
 // These variables will hold the results we get from the user's inputs via HTML
 var searchTerm = "";
-<<<<<<< HEAD
-var numResults = 0;
-var startDate = moment().format('L').split('/').join('');;
-var endYear = 0;
-=======
+
 var numResults = 5;
 var calc = moment().format('L').split('/');
 var day = calc[2]+calc[0]+calc[1];
@@ -14,14 +10,11 @@ var calc2 = moment().subtract(7, 'days').calendar().split('/');
 var week = calc2[2]+calc2[0]+calc2[1];;
 var calc3 = moment().subtract(29, 'days').calendar().split('/');
 var month = calc3[2]+calc3[0]+calc3[1];
->>>>>>> 7fe7f5f696a664f53744dddfee541d6f4da4b364
 
 var newQueryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" +
   authKey + "&q=";
 
 
-<<<<<<< HEAD
-=======
 $("#submit").on("click", function(event) {
 
   event.preventDefault();
@@ -35,7 +28,6 @@ $("#submit").on("click", function(event) {
   runQuery(numResults, searchURL);
 });
 
->>>>>>> 7fe7f5f696a664f53744dddfee541d6f4da4b364
 $("#today").on("click", function(event) {
 
   event.preventDefault();
@@ -46,16 +38,6 @@ $("#today").on("click", function(event) {
   searchTerm = $("#search").val().trim();
   var searchURL = newQueryURL + searchTerm;
 
-<<<<<<< HEAD
-  numResults = $("#num-records-select").val();
-
-  if (parseInt(startDate)) {
-    searchURL = searchURL + "&begin_date=" + startYear ;
-  }
-
-  runQuery(numResults, searchURL);
-});
-=======
     searchURL = searchURL + "&begin_date=" + day ;
 
   runQuery(numResults, searchURL);
@@ -154,5 +136,3 @@ function runQuery(numArticles, queryURL) {
 
 }
 
-
->>>>>>> 7fe7f5f696a664f53744dddfee541d6f4da4b364
