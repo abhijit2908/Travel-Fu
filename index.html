@@ -6,8 +6,8 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsfcqOPBuqw_lBLVvHWgzBhLLTtRtUHuQ&callback=initMap">
-    </script>
+
+     
     <!-- Added a comment, going to be firebase -->
 </head>
 <body>
@@ -33,10 +33,13 @@
      	</div>
      	<div class="col-md-6">
      		<div class="row">
-     			<input type="text" id="search" placeholder="cityName">
-     			<button type="button">Submit</button>
+     			<input type="text" id="search" placeholder="City Name">
+     			<button type="button" id="submit" class="btn btn-default btn-primary">Submit</button>
      		</div>
-     		<div class="row" id="mapsarea">Maps</div>
+     		<div class="row">
+     		<div id="mapsarea"></div>	
+			</div>
+     	
      		<div class="row">
      			<div class="panel panel-primary">
             		<div class="panel-heading">
@@ -81,6 +84,10 @@
 
 
 </div>
-	
+<script src="assets/javascript/weather.js"></script>
+<script src="assets/javascript/maps.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9SeR76KEIZ5ZnGEZy2DNkUZxqbJBeb3U&libraries=places&callback=initMap">
+    </script>
 </body>
 </html>
