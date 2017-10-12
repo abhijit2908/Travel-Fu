@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">    
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -22,15 +22,15 @@
 <body>
 
 <div class="container">
-	
+    
 <div class="jumbotron">
         <h1 class="text-center">Placeholder Title</h1>  
       </div>
 
      <div class="row">
-     	<div class="col-md-3">
-     	
-			<div class="panel panel-primary">
+        <div class="col-md-3">
+        
+            <div class="panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title"><strong>Most Recent Searches</strong></h3>
             </div>
@@ -39,25 +39,25 @@
             </div>
             
 
-     	</div>
-     	<div class="col-md-6">
-     		<div class="row">
-     			<input type="text" id="search" placeholder="cityName">
-     			<button type="button" id="submit" class="btn btn-default btn-primary">Submit</button>
-     		</div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <input type="text" id="search" placeholder="cityName">
+                <button type="button" id="submit" class="btn btn-default btn-primary">Submit</button>
+            </div>
 
-     		<div class="row">Maps</div>
-     		<div class="row">
+            <div class="row">Maps</div>
+            <div class="row">
                 <div class="col-md-10">
-         			<div class="panel panel-primary">
-                		<div class="panel-heading">
-                  			<h3 class="panel-title"><strong>Most Recent News</strong></h3>
-                		</div>
-                	
-                	<div id="news-api" class="panel-body">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><strong>Most Recent News</strong></h3>
+                        </div>
+                    
+                    <div id="news-api" class="panel-body">
                         
                     </div>
-                	</div>
+                    </div>
                 </div>
                 <div class="col-md-2">
                     <button id="today" class="btn btn-default btn-primary" type="button">Day</button>
@@ -65,19 +65,19 @@
                     <button id="month" class="btn btn-default btn-primary" type="button">Month</button>
                 </div>
                 <div id="pages">push pages into </div>
-     		</div>
-     	</div>
+            </div>
+        </div>
 
 
-     	<div class="col-md-3">
-     	
-     		<div class="panel panel-primary">
+        <div class="col-md-3">
+        
+            <div class="panel panel-primary">
 
-        		<div class="panel-heading">
-          			<h3 class="panel-title"><strong>login</strong></h3>
-        		</div>
-            	
-            	<div class="panel-body">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><strong>login</strong></h3>
+                </div>
+                
+                <div class="panel-body">
                     <input id="userEmail" type="text" class="form-control" placeholder="Email" aria-describedby="basic-addon1">
                     <br>
                     <input id="userPassword" type="text" class="form-control" placeholder="Password" aria-describedby="basic-addon1">
@@ -90,31 +90,28 @@
                         <button id="userLogin" class="btn btn-default" type="button">Login</button>
                     </span>   
                 </div>
-        	</div>
-			
-     		
-     		<div class="panel panel-primary">
-            		<div class="panel-heading">
-              			<h3 class="panel-title"><strong>Weather</strong></h3>
-            		</div>
-            	
-            	<div class="panel-body">
-                    <div class="row">
-                        <div id="temp">Temp</div>
-                     </div>
-                    <div class="row">
-                    <div id="weatherDesc">weatherDesc</div>
-                        <div class="col-md-12 animated-icon">
-                        Animated Icon
-                        </div>
+            </div>
+            
+            
+            <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Weather</strong></h3>
                     </div>
+                
+                <div class="panel-body">
+                        <div id="weather">
+                          <div id="location"></div>
+                          <div id="date"></div>
+                        </div>
+                        <div class="row" id="buttons"></div>
+                    
                 </div>
-        	</div>
+            </div>
 
-				
-     		
-     	
-     	</div>
+                
+            
+        
+        </div>
 
 
 
