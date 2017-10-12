@@ -35,13 +35,15 @@ $("#userLogin").on("click", function() {
 	userPassword = $("#userPassword").val().trim();
 	$("#userEmail").val("");
 	$("#userPassword").val("");
-	if ($("#newUser").checked) {
+	if ($("#newUser").is(":checked")) {
 		console.log("test");
+		$("#newUser").prop("checked", false);
 		firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 		});
 	} else {
+		console.log("test2");
 		firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -53,8 +55,8 @@ $("#userLogin").on("click", function() {
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    console.log("Sign in successful");
-    $("#userSearches").append("test");
+    alert("Sign in successful");
+    database.ref().push()
   } else {
     // No user is signed in.
     console.log("No one is signed in");
