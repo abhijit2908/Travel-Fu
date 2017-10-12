@@ -15,43 +15,58 @@ var userEmail;
 var userPassword;
 var newUser = false;
 
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+  .then(function() {
+    // Existing and future Auth states are now persisted in the current
+    // session only. Closing the window would clear any existing state even
+    // if a user forgets to sign out.
+    // ...
+    // New sign-in will be persisted with session persistence.
+    return firebase.auth().signInWithEmailAndPassword(email, password);
+  })
+  .catch(function(error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
+
 $("#userLogin").on("click", function() {
 	userEmail = $("#userEmail").val().trim();
 	userPassword = $("#userPassword").val().trim();
 	$("#userEmail").val("");
 	$("#userPassword").val("");
-	console.log(userEmail);
-	console.log(userPassword);
-	// if ($("#newUser").ischecked) {
-	firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
-		var errorCode = error.code;
-		var errorMessage = error.message;
-	});
-	// } else if (!$("#newUser").isChecked) {
-		// firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
-		// 	var errorCode = error.code;
-		// 	var errorMessage = error.message;
-		// });
-	// };
+	if ($("#newUser").checked) {
+		console.log("test");
+		firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+		});
+	} else {
+		firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+		});
+	};
 	
 });
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    alert("Sign in successful");
+    console.log("Sign in successful");
+    $("#userSearches").append("test");
   } else {
     // No user is signed in.
-    alert("No one is signed in");
+    console.log("No one is signed in");
   }
 });
 
 firebase.auth().signOut().then(function() {
   // Sign-out successful.
-  alert("Sign out successful");
+  console.log("Sign out successful");
 }).catch(function(error) {
   // An error happened.
-  alert("Error.");
+  console.log("Error.");
 });
 
 // database.ref().push({
