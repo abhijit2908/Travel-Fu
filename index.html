@@ -8,6 +8,10 @@
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+
+     
+    <!-- Added a comment, going to be firebase -->
+
     
  
 
@@ -16,6 +20,7 @@
 
 
     <script src="https://www.gstatic.com/firebasejs/4.5.0/firebase.js"></script>
+
 
 
 </head>
@@ -39,6 +44,7 @@
             </div>
             
 
+
         </div>
         <div class="col-md-6">
             <div class="row">
@@ -48,6 +54,23 @@
 
             <div class="row">Maps</div>
             <div class="row">
+
+     	</div>
+     	<div class="col-md-6">
+     		<div class="row">
+     			<input type="text" id="search" placeholder="City Name">
+     			<button type="button" id="submit" class="btn btn-default btn-primary">Submit</button>
+     		</div>
+
+     		<div class="row">
+     		<div id="mapsarea"></div>	
+			</div>
+
+
+     		<div class="row">Maps</div>
+
+     		<div class="row">
+
                 <div class="col-md-10">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
@@ -124,11 +147,18 @@
 
 <script src="assets/javascript/weather.js"></script>
 
+<script src="assets/javascript/maps.js"></script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9SeR76KEIZ5ZnGEZy2DNkUZxqbJBeb3U&libraries=places&callback=initMap">
+    </script>
+
+
 
 <script src="assets/javascript/firebase.js"></script>
 
 
 <script src="assets/javascript/news.js"></script>
+
 
 </body>
 </html>
