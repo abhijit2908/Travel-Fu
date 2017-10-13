@@ -15,7 +15,7 @@ $('body').on("click", "#submit",function(){
 
 
 
-$('body').on("click", "#Celcius", function(){
+$('body').on("click", "#Celsius", function(){
    
     emptyResults();
     var units="metric";
@@ -25,7 +25,7 @@ $('body').on("click", "#Celcius", function(){
 
 
 
-$('body').on("click", "#Fareinheit", function(){
+$('body').on("click", "#Fahrenheit", function(){
       emptyResults();
       var units="imperial";
       callWeatherAPI(units);
@@ -42,6 +42,8 @@ function emptyResults(){
         $("#wind").empty();
         $("#humidity").empty();
         $("#buttons").empty();
+        $(".tabResults").empty();
+        
 }
 
 
@@ -78,6 +80,23 @@ function createWeather(response){
         location.css({ 'color': '#000000', 'font-size': '80%','font-family': 'calibri','background-color': '#b8a837', 'text-align': 'center'});
         location.addClass("row col-md-10 col-md-offset-1");
 
+
+        // var table = $("<table>");
+
+
+
+  //       
+  //       console.log("line 87 " + table);
+		
+		// var header = "<tr><th>Date</th><th>Temp Min</th><th>Temp Max</th><th>Icon</th></tr>";
+		// table.append(header);
+       
+        
+
+
+        // console.log("line 91 " + header);
+
+
     for (var i = 0; i < 39; i= i+8) {
 
 
@@ -109,39 +128,57 @@ function displayWeather(weather){
 
 
 
-      var p = $("<p>").text(weather.date);
-      p.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'yellow'});
-      p.addClass("row  col-md-10 col-md-offset-1");
+      // var p = $("<p>").text(weather.date);
+      // p.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'yellow'});
+      // p.addClass("row  col-md-10 col-md-offset-1");
 
 
-      var ptemp = $("<div>").text("Temp: " + weather.temp);
-      ptemp.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'pink'});
-      ptemp.addClass("row col-md-3 col-md-offset-1");
+      // var ptemp = $("<div>").text("Temp: " + weather.temp);
+      // ptemp.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'pink'});
+      // ptemp.addClass("row col-md-3 col-md-offset-1");
 
-      var temp_min = $("<div>").text("Min: " + weather.temp_min);
-      temp_min.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'grey'});
-      temp_min.addClass("row col-md-3 col-md-offset-1");
+      // var temp_min = $("<div>").text("Min: " + weather.temp_min);
+      // temp_min.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'grey'});
+      // temp_min.addClass("row col-md-3 col-md-offset-1");
 
-      var temp_max = $("<div>").text("Max: " + weather.temp_max);
-      temp_max.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'orange'});
-      temp_max.addClass("row col-md-3 col-md-offset-1");
+      // var temp_max = $("<div>").text("Max: " + weather.temp_max);
+      // temp_max.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'orange'});
+      // temp_max.addClass("row col-md-3 col-md-offset-1");
 
-      var pIcon = $("<img>");
-      pIcon.attr("src", "http://openweathermap.org/img/w/" + weather.icon + ".png");  
-      pIcon.attr("width", 120);
-      pIcon.attr("height", 150);
-      pIcon.addClass("row col-md-12");
+       // var pIcon = document.createElement('img');
+       // //pIcon.attr("src", "http://openweathermap.org/img/w/" + weather.icon + ".png"); 
+       // console.log("Line 150 " + "http://openweathermap.org/img/w/" + weather.icon + ".png");
+       // console.log("Line 151 " + pIcon);
+      // pIcon.attr("width", 120);
+      // pIcon.attr("height", 150);
+      // pIcon.addClass("row col-md-12");
+
+      
+
       
 
 
-      // date.css({'border': '2px solid black'});
+      // // date.css({'border': '2px solid black'});
 
 
-      date.append(p);
-      date.append(ptemp);
-      date.append(temp_min);
-      date.append(temp_max);
-      date.append(pIcon);
+      // date.append(p);
+      // date.append(ptemp);
+      // date.append(temp_min);
+      // date.append(temp_max);
+      // date.append(pIcon);
+
+
+
+      $('table tr:last')
+		.after(
+  	    '<tr class="tabResults"><td>'  + weather.date
+ 	  + '</td><td>' + weather.temp_min
+      + '</td><td>' + weather.temp_max
+      + '</td><td id="iconImg"></td></tr>'
+
+  )
+ 
+ $("#iconImg").append('<img src="http://openweathermap.org/img/w/01d.png">');
 
 }
 
@@ -156,15 +193,15 @@ function createButtons(){
       var c = $("<button>");
       c.addClass("btn btn-primary col-md-5");
       c.height(40);
-      c.html("Celcius");
-      c.attr('id','Celcius');
+      c.html("Celsius");
+      c.attr('id','Celsius');
       buttons.append(c);
       
       var f = $("<button>");
       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
       f.height(40);
-      f.html("Fareinheit");
-      f.attr('id','Fareinheit');
+      f.html("Fahrenheit");
+      f.attr('id','Fahrenheit');
       buttons.append(f);
 
 
