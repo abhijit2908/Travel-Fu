@@ -1,3 +1,10 @@
+.label{
+	margin-right: 10px;
+	font-size: 150%;
+}
+.well{
+	text-align: center;
+}
 #mapsarea{
 height:300px;
 width:580px;
@@ -10,4 +17,3 @@ margin-top: 10px;
 #search{
 	width:505px;
 }
-
