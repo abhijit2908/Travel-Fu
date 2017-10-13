@@ -5,3 +5,16 @@
 .well{
 	text-align: center;
 }
+#mapsarea{
+height:300px;
+width:580px;
+border:2px solid black;
+margin-bottom: 10px;
+margin-top: 10px;
+
+}
+
+#search{
+	width:505px;
+}
+
