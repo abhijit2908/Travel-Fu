@@ -17,3 +17,14 @@ margin-top: 10px;
 #search{
 	width:505px;
 }
+
+#newUser {
+	float: left;
+	margin-right: 5px;
+}
+#userCheckbox {
+	text-align: left;
+}
+#userLogOut {
+	float: right;
+}
