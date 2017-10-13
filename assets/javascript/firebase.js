@@ -31,20 +31,20 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   });
 
 $("#userLogin").on("click", function() {
-	userEmail = $("#userEmail").val().trim();
-	userPassword = $("#userPassword").val().trim();
+	var email = $("#userEmail").val().trim();
+	var password = $("#userPassword").val().trim();
 	$("#userEmail").val("");
 	$("#userPassword").val("");
 	if ($("#newUser").is(":checked")) {
 		console.log("test");
 		$("#newUser").prop("checked", false);
-		firebase.auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 		});
 	} else {
 		console.log("test2");
-		firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 		});
@@ -52,26 +52,31 @@ $("#userLogin").on("click", function() {
 	
 });
 
+$("#userLogOut").on("click", function() {
+	firebase.auth().signOut().then(function() {
+	  // Sign-out successful.
+	  alert("Sign out successful");
+	}).catch(function(error) {
+	  // An error happened.
+	  console.log("Error.");
+	});
+})
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
     alert("Sign in successful");
-    database.ref().push()
+    var currentUser = firebase.auth().currentUser;
+	if (currentUser !== null) {
+		email = currentUser.email;
+		uid = currentUser.uid;
+		console.log(email);
+		console.log(uid);
+	}
   } else {
     // No user is signed in.
     console.log("No one is signed in");
   }
 });
 
-firebase.auth().signOut().then(function() {
-  // Sign-out successful.
-  console.log("Sign out successful");
-}).catch(function(error) {
-  // An error happened.
-  console.log("Error.");
-});
 
-// database.ref().push({
-// 	userEmail: userEmail,
-// 	userPassword: userPassword
-// });
