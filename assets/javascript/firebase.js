@@ -60,7 +60,7 @@ $("#userLogOut").on("click", function() {
 	  // An error happened.
 	  console.log("Error.");
 	});
-})
+});
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -72,7 +72,22 @@ firebase.auth().onAuthStateChanged(function(user) {
 		uid = currentUser.uid;
 		console.log(email);
 		console.log(uid);
-	}
+		$("#submit").on("click", function(event) {
+			event.preventDefault();
+			var search = $("#search").val().trim();
+			console.log(search);
+			database.ref(uid + "/searches").push({
+				location: search,
+				dateAdded: firebase.database.ServerValue.TIMESTAMP
+			});
+		});
+		
+		database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(10).on("child_added", function(snapshot) {
+			$("#userSearches").prepend(snapshot.val().location + "<br>");
+		});
+		
+
+	};
   } else {
     // No user is signed in.
     console.log("No one is signed in");
