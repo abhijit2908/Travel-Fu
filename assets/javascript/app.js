@@ -137,26 +137,26 @@ function displayWeather(weather){
 
 
 
-function createButtons(){
+// function createButtons(){
 
-      var buttons = $("#buttons");
+//       var buttons = $("#buttons");
 
-      var c = $("<button>");
-      c.addClass("btn btn-primary col-md-5");
-      c.height(40);
-      c.html("Celsius");
-      c.attr('id','Celsius');
-      buttons.append(c);
+//       var c = $("<button>");
+//       c.addClass("btn btn-success col-md-5");
+//       c.height(40);
+//       c.html("Celsius");
+//       c.attr('id','Celsius');
+//       buttons.append(c);
       
-      var f = $("<button>");
-      f.addClass("btn btn-primary col-md-5 col-md-offset-1");
-      f.height(40);
-      f.html("Fahrenheit");
-      f.attr('id','Fahrenheit');
-      buttons.append(f);
+//       var f = $("<button>");
+//       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
+//       f.height(40);
+//       f.html("Fahrenheit");
+//       f.attr('id','Fahrenheit');
+//       buttons.append(f);
 
 
-}
+// }
 
 // ====================================================================================================================
 // News.js
