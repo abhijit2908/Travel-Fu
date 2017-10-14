@@ -20,6 +20,7 @@ var newQueryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-
 // $(document).ready(function(){
 
 // })
+
 $("#submit").on("click", function(event) {
 
   event.preventDefault();
@@ -96,13 +97,24 @@ function getInfo(queryURL){
     url: queryURL,
     method: "GET"
   }).done(function(NYTData1) {
+    console.log(NYTData1);
     for (var i = 0; i < numResults; i++) {
+      console.log(NYTData1.response.docs[i],i);
       currentArr[i] = {
         content:NYTData1.response.docs[i].headline.main,
-        by:NYTData1.response.docs[i].byline.original,
         section:NYTData1.response.docs[i].section_name,
         date:NYTData1.response.docs[i].pub_date,
         urll:NYTData1.response.docs[i].web_url
+      }
+      // console.log(typeof(NYTData1.response.docs[i].byline.original));
+      if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
+        if(NYTData1.response.docs[i].byline.original==null){
+          currentArr[i].by = 'By Unknown';
+        }else{
+          currentArr[i].by = NYTData1.response.docs[i].byline.original;
+        }
+      }else{
+        currentArr[i].by = 'By Unknown';
       }
       // console.log(currentArr,'fdsf');
       var numbers = $('<span>')
@@ -124,10 +136,8 @@ function getInfo(queryURL){
 function runQuery() {
 
       var wellSection = $("<div>");
-      wellSection.addClass("well");
       wellSection.attr("id", "subArticle");
       $("#news-api").append(wellSection);
-      // console.log(currentArr.length)
 
       if (currentArr[articleCounter].content !== "null") {
         $("#subArticle")
@@ -137,7 +147,7 @@ function runQuery() {
           );
       }
 
-      if (currentArr[articleCounter].by) {
+      if (currentArr[articleCounter].by!=='undefined') {
         $("#subArticle")
           .append("<h5>" + currentArr[articleCounter].by + "</h5>");
       }
