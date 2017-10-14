@@ -4,7 +4,7 @@ var temp;
 var location;
 var icon;
 var date;
-
+var icnCounter = 0;
 
 $('body').on("click", "#submit",function(){
     emptyResults();
@@ -87,9 +87,9 @@ function createWeather(response){
 
   //       
   //       console.log("line 87 " + table);
-		
-		// var header = "<tr><th>Date</th><th>Temp Min</th><th>Temp Max</th><th>Icon</th></tr>";
-		// table.append(header);
+    
+    // var header = "<tr><th>Date</th><th>Temp Min</th><th>Temp Max</th><th>Icon</th></tr>";
+    // table.append(header);
        
         
 
@@ -170,15 +170,18 @@ function displayWeather(weather){
 
 
       $('table tr:last')
-		.after(
-  	    '<tr class="tabResults"><td>'  + weather.date
- 	  + '</td><td>' + weather.temp_min
+    .after(
+        '<tr class="tabResults"><td>'  + weather.date
+    +   '</td><td>' + weather.temp_min
       + '</td><td>' + weather.temp_max
-      + '</td><td id="iconImg"></td></tr>'
+      + '</td><td id=iconImg' +  icnCounter + '></td></tr>'
 
   )
  
- $("#iconImg").append('<img src="http://openweathermap.org/img/w/01d.png">');
+ $("#iconImg"+ icnCounter + "").append('<img src="http://openweathermap.org/img/w/'+ weather.icon + '.png">');
+
+ console.log("icnCounter = " + icnCounter);
+icnCounter++;
 
 }
 
