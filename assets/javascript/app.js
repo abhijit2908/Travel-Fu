@@ -370,11 +370,12 @@ var infoWindow = new google.maps.InfoWindow;
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      
+      deleteMarkers();
       infoWindow.setPosition(pos);
       //infoWindow.setContent('Location found.');
-      infoWindow.open(map);
+      //infoWindow.open(map);
       map.setCenter(pos);
+      
       var yourLocoMarker = new google.maps.Marker({
               map:map,
               position:pos,
