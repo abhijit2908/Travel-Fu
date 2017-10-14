@@ -18,7 +18,7 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container-fluid">
     
 <div class="jumbotron">
         <h1 class="text-center">Placeholder Title</h1>  
@@ -48,11 +48,11 @@
      		</div>
 
      		<div class="row">
-     		<div id="mapsarea"></div>	
+     		<div class="span6" id="mapsarea"></div>	
 			</div>
 
 
-     		<div class="row">Maps</div>
+     		<!-- <div class="row"></div> -->
 
      		<div class="row">
 
@@ -115,20 +115,16 @@
                 
                 <div class="panel-body">
                         <div id="weather">
-                          <div id="location"></div>
-                          <div id="date"></div>
-                          <table class="table">
-                           <tr>
+                        <table class="table">
+                              <tr>
                                  <th>Date</th>
                                  <th>Temp Min</th>
                                  <th>Temp Max</th>
                                  <th>Icon</th>
-                            </tr>
+                             </tr>
                         </table>
-                        </div>
                         <div class="row" id="buttons"></div>
-                    
-                </div>
+                 </div>
             </div>
 
                 
@@ -148,16 +144,13 @@
 <script src="assets/javascript/weather.js"></script>
 
 <script src="assets/javascript/maps.js"></script>
-<script async defer
+<script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9SeR76KEIZ5ZnGEZy2DNkUZxqbJBeb3U&libraries=places&callback=initMap">
     </script>
-
+<script src="assets/javascript/news.js"></script>
 
 
 <script src="assets/javascript/firebase.js"></script>
-
-
-<script src="assets/javascript/news.js"></script>
 
 
 </body>
