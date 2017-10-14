@@ -71,8 +71,8 @@ function callWeatherAPI(units){
 
 function createWeather(response){
 
-  console.log(response);
-  console.log("Forecast in " + response.city.name );
+  // console.log(response);
+  // console.log("Forecast in " + response.city.name );
 
 
         var location =$("#location");
@@ -81,20 +81,6 @@ function createWeather(response){
         location.addClass("row col-md-10 col-md-offset-1");
 
 
-        // var table = $("<table>");
-
-
-
-  //       
-  //       console.log("line 87 " + table);
-    
-    // var header = "<tr><th>Date</th><th>Temp Min</th><th>Temp Max</th><th>Icon</th></tr>";
-    // table.append(header);
-       
-        
-
-
-        // console.log("line 91 " + header);
 
 
     for (var i = 0; i < 39; i= i+8) {
@@ -119,53 +105,13 @@ function createWeather(response){
 
 function displayWeather(weather){
 
-      console.log("Line 144 " + weather.date);
+      // console.log("Line 144 " + weather.date);
 
 
 
       var date = $("#date");
       date.addClass("row");
 
-
-
-      // var p = $("<p>").text(weather.date);
-      // p.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'yellow'});
-      // p.addClass("row  col-md-10 col-md-offset-1");
-
-
-      // var ptemp = $("<div>").text("Temp: " + weather.temp);
-      // ptemp.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'pink'});
-      // ptemp.addClass("row col-md-3 col-md-offset-1");
-
-      // var temp_min = $("<div>").text("Min: " + weather.temp_min);
-      // temp_min.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'grey'});
-      // temp_min.addClass("row col-md-3 col-md-offset-1");
-
-      // var temp_max = $("<div>").text("Max: " + weather.temp_max);
-      // temp_max.css({ 'color': '#1f8116', 'font-size': '120%','font-family': 'calibri','background-color': 'orange'});
-      // temp_max.addClass("row col-md-3 col-md-offset-1");
-
-       // var pIcon = document.createElement('img');
-       // //pIcon.attr("src", "http://openweathermap.org/img/w/" + weather.icon + ".png"); 
-       // console.log("Line 150 " + "http://openweathermap.org/img/w/" + weather.icon + ".png");
-       // console.log("Line 151 " + pIcon);
-      // pIcon.attr("width", 120);
-      // pIcon.attr("height", 150);
-      // pIcon.addClass("row col-md-12");
-
-      
-
-      
-
-
-      // // date.css({'border': '2px solid black'});
-
-
-      // date.append(p);
-      // date.append(ptemp);
-      // date.append(temp_min);
-      // date.append(temp_max);
-      // date.append(pIcon);
 
 
 
@@ -180,8 +126,8 @@ function displayWeather(weather){
  
  $("#iconImg"+ icnCounter + "").append('<img src="http://openweathermap.org/img/w/'+ weather.icon + '.png">');
 
- console.log("icnCounter = " + icnCounter);
-icnCounter++;
+ // console.log("icnCounter = " + icnCounter);
+    icnCounter++;
 
 }
 
