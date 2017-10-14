@@ -341,12 +341,13 @@ function runQuery() {
 // ====================================================================================================================
 
 
-var  map,infoWindow;
+var  map,searchmap;
+
 var markers=[];
 function initMap() {
         map = new google.maps.Map(document.getElementById('mapsarea'), {
           zoom: 10,
-          center: {lat: -34.397, lng: 150.644}
+          center: {lat: 35.787743, lng: -78.644257}
         });
         var marker = new google.maps.Marker({
               map:map,
@@ -359,8 +360,8 @@ function initMap() {
       var input = document.getElementById('search');
       var autocomplete = new google.maps.places.Autocomplete(input);
         
-
-       infoWindow = new google.maps.InfoWindow;
+var infoWindow = new google.maps.InfoWindow;
+     
 
   // Try HTML5 geolocation.This allows maps to tell uesrs current location
   if (navigator.geolocation) {
@@ -370,9 +371,9 @@ function initMap() {
         lng: position.coords.longitude
       };
       
-      //infoWindow.setPosition(pos);
+      infoWindow.setPosition(pos);
       //infoWindow.setContent('Location found.');
-      //infoWindow.open(map);
+      infoWindow.open(map);
       map.setCenter(pos);
       var yourLocoMarker = new google.maps.Marker({
               map:map,
@@ -393,14 +394,14 @@ function initMap() {
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
-        //infoWindow = new google.maps.InfoWindow;
+  // infoWindow.setPosition(pos);
+  // infoWindow.setContent(browserHasGeolocation ?
+  //                       'Error: The Geolocation service failed.' :
+  //                       'Error: Your browser doesn\'t support geolocation.');
+  // infoWindow.open(map);
 
+  //       infoWindow = new google.maps.InfoWindow;
+}
   // // Try HTML5 geolocation.
   // if (navigator.geolocation) {
   //   navigator.geolocation.getCurrentPosition(function(position) {
@@ -433,29 +434,42 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 
 //Geocoder function helps display place searched.
-        var geocoder = new google.maps.Geocoder();
-         // console.log("has map initialized yes")
         
-        document.getElementById('submit').addEventListener('click', function() {
+         // console.log("has map initialized yes")
+   
+      var geocoder = new google.maps.Geocoder(); 
+       $('body').on('click','#submit', function() {
           console.log("submit clicked");
           geocodeAddress(geocoder, map);
-        });
-      }
-    
+        }); 
+        }
+       // 
+       //  $('body').on('click','#submit', function() {
+       //    console.log("submit clicked");
+       //    geocodeAddress(geocoder, map);
+       //  }); 
+
       function geocodeAddress(geocoder, resultsMap) {
             deleteMarkers();
+            
         var address = document.getElementById('search').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             resultsMap.setZoom(13);
+            console.log(results[0].geometry.location)
+          //var searchmap = new google.maps.Map($('#mapsarea'), {
+         // zoom: 13,
+         // center:resultsMap.setCenter(results[0].geometry.location)
+       // });
           var  searchedMarker = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location,
               title:address
             });
             markers.push(searchedMarker)
-          } else {
+          } 
+          else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });
@@ -480,6 +494,8 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
+
+
 
 // ====================================================================================================================
 // Firebase.js
