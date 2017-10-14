@@ -36,14 +36,12 @@ $("#userLogin").on("click", function() {
 	$("#userEmail").val("");
 	$("#userPassword").val("");
 	if ($("#newUser").is(":checked")) {
-		console.log("test");
 		$("#newUser").prop("checked", false);
 		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
 		});
 	} else {
-		console.log("test2");
 		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
 			var errorCode = error.code;
 			var errorMessage = error.message;
@@ -70,8 +68,6 @@ firebase.auth().onAuthStateChanged(function(user) {
 	if (currentUser !== null) {
 		email = currentUser.email;
 		uid = currentUser.uid;
-		console.log(email);
-		console.log(uid);
 		$("#submit").on("click", function(event) {
 			event.preventDefault();
 			var search = $("#search").val().trim();
@@ -82,8 +78,8 @@ firebase.auth().onAuthStateChanged(function(user) {
 			});
 		});
 		
-		database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(10).on("child_added", function(snapshot) {
-			$("#userSearches").prepend(snapshot.val().location + "<br>");
+		database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+			$("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
 		});
 		
 
@@ -92,6 +88,12 @@ firebase.auth().onAuthStateChanged(function(user) {
     // No user is signed in.
     console.log("No one is signed in");
   }
+});
+
+$("#userSearches").on("click", "div", function() {
+	var search = $(this).text();
+	$("#search").val(search);
+	$("#submit").trigger("click");
 });
 
 

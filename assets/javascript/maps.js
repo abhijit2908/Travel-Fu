@@ -77,6 +77,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
          // console.log("has map initialized yes")
         
         document.getElementById('submit').addEventListener('click', function() {
+          console.log("submit clicked");
           geocodeAddress(geocoder, map);
         });
       }
