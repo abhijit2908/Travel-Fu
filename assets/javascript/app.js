@@ -261,31 +261,39 @@ function getInfo(queryURL){
     url: queryURL,
     method: "GET"
   }).done(function(NYTData1) {
-    console.log(NYTData1);
-    for (var i = 0; i < numResults; i++) {
-      console.log(NYTData1.response.docs[i],i);
-      currentArr[i] = {
-        content:NYTData1.response.docs[i].headline.main,
-        section:NYTData1.response.docs[i].section_name,
-        date:NYTData1.response.docs[i].pub_date,
-        urll:NYTData1.response.docs[i].web_url
-      }
-      // console.log(typeof(NYTData1.response.docs[i].byline.original));
-      if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
-        if(NYTData1.response.docs[i].byline.original==null){
-          currentArr[i].by = 'By Unknown';
-        }else{
-          currentArr[i].by = NYTData1.response.docs[i].byline.original;
+    // console.log(NYTData1);
+    if(NYTData1.response.docs.length){
+      for (var i = 0; i < numResults; i++) {
+        // console.log(NYTData1.response.docs[i],i);
+        currentArr[i] = {
+          content:NYTData1.response.docs[i].headline.main,
+          section:NYTData1.response.docs[i].section_name,
+          date:NYTData1.response.docs[i].pub_date,
+          urll:NYTData1.response.docs[i].web_url
         }
-      }else{
-        currentArr[i].by = 'By Unknown';
+        // console.log(typeof(NYTData1.response.docs[i].byline.original));
+        if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
+          if(NYTData1.response.docs[i].byline.original==null){
+            currentArr[i].by = 'By Unknown';
+          }else{
+            currentArr[i].by = NYTData1.response.docs[i].byline.original;
+          }
+        }else{
+          currentArr[i].by = 'By Unknown';
+        }
+        // console.log(currentArr,'fdsf');
+        var numbers = $('<span>')
+        numbers.addClass('label label-primary');
+        numbers.attr('page',i);
+        numbers.text(i+1);
+        $('#pages').append(numbers);
       }
-      // console.log(currentArr,'fdsf');
-      var numbers = $('<span>')
-      numbers.addClass('label label-primary');
-      numbers.attr('page',i);
-      numbers.text(i+1);
-      $('#pages').append(numbers);
+    }else{
+      // console.log('temp')
+      currentArr = [];
+      currentArr[0] = {
+          content: 'Please Enter Valid City, State'
+      }
     }
     $('.label-primary').on('click',function(){
       $("#news-api").empty();
