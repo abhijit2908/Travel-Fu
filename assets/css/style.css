@@ -28,3 +28,7 @@ margin-top: 10px;
 #userLogOut {
 	float: right;
 }
+.panel-heading{
+	display: flex;
+	align-items: center;
+}
