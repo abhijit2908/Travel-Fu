@@ -10,7 +10,7 @@ var icnCounter = 0;
 
 $('body').on("click", "#submit",function(){
     emptyResults();
-    setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
+    // setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
     var buttonMsg = $("#buttons");
     buttonMsg.html("Choose the unit for the forecast");
 });
@@ -22,7 +22,7 @@ $('body').on("click", "#Celsius", function(){
     emptyResults();
     var units="metric";
     callWeatherAPI(units);
-    setTimeout(createButtons,500);
+    // setTimeout(createButtons,500);
 });
 
 
@@ -31,7 +31,7 @@ $('body').on("click", "#Fahrenheit", function(){
       emptyResults();
       var units="imperial";
       callWeatherAPI(units);
-      setTimeout(createButtons,500);
+      // setTimeout(createButtons,500);
 });
 
 
