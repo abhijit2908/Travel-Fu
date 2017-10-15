@@ -364,75 +364,33 @@ var infoWindow = new google.maps.InfoWindow;
      
 
   // Try HTML5 geolocation.This allows maps to tell uesrs current location
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      deleteMarkers();
-      infoWindow.setPosition(pos);
-      //infoWindow.setContent('Location found.');
-      //infoWindow.open(map);
-      map.setCenter(pos);
+   if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            deleteMarkers();
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
       
-      var yourLocoMarker = new google.maps.Marker({
-              map:map,
-              position:pos,
-              title:"Your location"
-              });
-         markers.push(yourLocoMarker);
-        console.log("yourLocoMarker"+markers)
-      
-    }, function() {
-      handleLocationError(true, map.getCenter());
-    });
-    
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
-  }
 
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  // infoWindow.setPosition(pos);
-  // infoWindow.setContent(browserHasGeolocation ?
-  //                       'Error: The Geolocation service failed.' :
-  //                       'Error: Your browser doesn\'t support geolocation.');
-  // infoWindow.open(map);
-
-  //       infoWindow = new google.maps.InfoWindow;
-}
-  // // Try HTML5 geolocation.
-  // if (navigator.geolocation) {
-  //   navigator.geolocation.getCurrentPosition(function(position) {
-  //     var pos = {
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     };
-
-  //     infoWindow.setPosition(pos);
-  //     infoWindow.setContent('Location found.');
-  //     infoWindow.open(map);
-  //     map.setCenter(pos);
-  //   }, function() {
-  //     handleLocationError(true, infoWindow, );
-      
-  //   });
-  // } else {
-  //   // Browser doesn't support Geolocation
-  //   handleLocationError(false, infoWindow, map.getCenter());
-  // }
-
-
-// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//   infoWindow.setPosition(pos);
-//   infoWindow.setContent(browserHasGeolocation ?
-//                         'Error: The Geolocation service failed.' :
-//                         'Error: Your browser doesn\'t support geolocation.');
-//   infoWindow.open(map);
-// }
-
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
 
 //Geocoder function helps display place searched.
         
@@ -471,7 +429,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             markers.push(searchedMarker)
           } 
           else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            $('#myModal').modal("show");
+            //'Geocode was not successful for the following reason: ' + status
           }
         });
       }
