@@ -500,15 +500,14 @@ var database = firebase.database();
 
 var userEmail;
 var userPassword;
-var newUser = false;
+var uid;
+var currentUser;
 
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .then(function() {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
+    // Existing and future Auth states are now persisted in local storage. User must hit the sign out button to log out.
     // ...
-    // New sign-in will be persisted with session persistence.
+    // New sign-in will be persisted with local persistence.
     return firebase.auth().signInWithEmailAndPassword(email, password);
   })
   .catch(function(error) {
@@ -540,7 +539,7 @@ $("#userLogin").on("click", function() {
 $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
-    alert("Sign out successful");
+    $($(this).attr("data-target")).modal("show");
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -550,27 +549,24 @@ $("#userLogOut").on("click", function() {
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    alert("Sign in successful");
-    var currentUser = firebase.auth().currentUser;
-  if (currentUser !== null) {
-    email = currentUser.email;
-    uid = currentUser.uid;
-    $("#submit").on("click", function(event) {
-      event.preventDefault();
-      var search = $("#search").val().trim();
-      console.log(search);
-      database.ref(uid + "/searches").push({
-        location: search,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
-      });
-    });
-    
-    database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
-      $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
-    });
-    
 
-  };
+    currentUser = firebase.auth().currentUser;
+    if (currentUser !== null) {
+      email = currentUser.email;
+      uid = currentUser.uid;
+      // $("#submit").on("click", function(event) {
+      //   event.preventDefault();
+      //   var search = $("#search").val().trim();
+      //   database.ref(uid + "/searches").push({
+      //     location: search,
+      //     dateAdded: firebase.database.ServerValue.TIMESTAMP
+      //   });
+      // });
+    
+      database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+        $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
+      });
+    };
   } else {
     // No user is signed in.
     console.log("No one is signed in");
@@ -582,3 +578,19 @@ $("#userSearches").on("click", "div", function() {
   $("#search").val(search);
   $("#submit").trigger("click");
 });
+
+
+// ====================================================================================================================
+// Submit button function
+// ====================================================================================================================
+
+
+$("#submit").on("click", function() {
+  event.preventDefault();
+  var search = $("#search").val().trim();
+  database.ref(uid + "/searches").push({
+    location: search,
+    dateAdded: firebase.database.ServerValue.TIMESTAMP
+  });
+
+})
