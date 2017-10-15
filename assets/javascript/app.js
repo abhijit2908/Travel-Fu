@@ -137,26 +137,26 @@ function displayWeather(weather){
 
 
 
-function createButtons(){
+// function createButtons(){
 
-      var buttons = $("#buttons");
+//       var buttons = $("#buttons");
 
-      var c = $("<button>");
-      c.addClass("btn btn-primary col-md-5");
-      c.height(40);
-      c.html("Celsius");
-      c.attr('id','Celsius');
-      buttons.append(c);
+//       var c = $("<button>");
+//       c.addClass("btn btn-success col-md-5");
+//       c.height(40);
+//       c.html("Celsius");
+//       c.attr('id','Celsius');
+//       buttons.append(c);
       
-      var f = $("<button>");
-      f.addClass("btn btn-primary col-md-5 col-md-offset-1");
-      f.height(40);
-      f.html("Fahrenheit");
-      f.attr('id','Fahrenheit');
-      buttons.append(f);
+//       var f = $("<button>");
+//       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
+//       f.height(40);
+//       f.html("Fahrenheit");
+//       f.attr('id','Fahrenheit');
+//       buttons.append(f);
 
 
-}
+// }
 
 // ====================================================================================================================
 // News.js
@@ -261,31 +261,39 @@ function getInfo(queryURL){
     url: queryURL,
     method: "GET"
   }).done(function(NYTData1) {
-    console.log(NYTData1);
-    for (var i = 0; i < numResults; i++) {
-      console.log(NYTData1.response.docs[i],i);
-      currentArr[i] = {
-        content:NYTData1.response.docs[i].headline.main,
-        section:NYTData1.response.docs[i].section_name,
-        date:NYTData1.response.docs[i].pub_date,
-        urll:NYTData1.response.docs[i].web_url
-      }
-      // console.log(typeof(NYTData1.response.docs[i].byline.original));
-      if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
-        if(NYTData1.response.docs[i].byline.original==null){
-          currentArr[i].by = 'By Unknown';
-        }else{
-          currentArr[i].by = NYTData1.response.docs[i].byline.original;
+    // console.log(NYTData1);
+    if(NYTData1.response.docs.length){
+      for (var i = 0; i < numResults; i++) {
+        // console.log(NYTData1.response.docs[i],i);
+        currentArr[i] = {
+          content:NYTData1.response.docs[i].headline.main,
+          section:NYTData1.response.docs[i].section_name,
+          date:NYTData1.response.docs[i].pub_date,
+          urll:NYTData1.response.docs[i].web_url
         }
-      }else{
-        currentArr[i].by = 'By Unknown';
+        // console.log(typeof(NYTData1.response.docs[i].byline.original));
+        if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
+          if(NYTData1.response.docs[i].byline.original==null){
+            currentArr[i].by = 'By Unknown';
+          }else{
+            currentArr[i].by = NYTData1.response.docs[i].byline.original;
+          }
+        }else{
+          currentArr[i].by = 'By Unknown';
+        }
+        // console.log(currentArr,'fdsf');
+        var numbers = $('<span>')
+        numbers.addClass('label label-primary');
+        numbers.attr('page',i);
+        numbers.text(i+1);
+        $('#pages').append(numbers);
       }
-      // console.log(currentArr,'fdsf');
-      var numbers = $('<span>')
-      numbers.addClass('label label-primary');
-      numbers.attr('page',i);
-      numbers.text(i+1);
-      $('#pages').append(numbers);
+    }else{
+      // console.log('temp')
+      currentArr = [];
+      currentArr[0] = {
+          content: 'Please Enter Valid City, State'
+      }
     }
     $('.label-primary').on('click',function(){
       $("#news-api").empty();
@@ -341,12 +349,13 @@ function runQuery() {
 // ====================================================================================================================
 
 
-var  map,infoWindow;
+var  map,searchmap;
+
 var markers=[];
 function initMap() {
         map = new google.maps.Map(document.getElementById('mapsarea'), {
           zoom: 10,
-          center: {lat: -34.397, lng: 150.644}
+          center: {lat: 35.787743, lng: -78.644257}
         });
         var marker = new google.maps.Marker({
               map:map,
@@ -359,8 +368,8 @@ function initMap() {
       var input = document.getElementById('search');
       var autocomplete = new google.maps.places.Autocomplete(input);
         
-
-       infoWindow = new google.maps.InfoWindow;
+var infoWindow = new google.maps.InfoWindow;
+     
 
   // Try HTML5 geolocation.This allows maps to tell uesrs current location
   if (navigator.geolocation) {
@@ -370,9 +379,9 @@ function initMap() {
         lng: position.coords.longitude
       };
       
-      //infoWindow.setPosition(pos);
+      infoWindow.setPosition(pos);
       //infoWindow.setContent('Location found.');
-      //infoWindow.open(map);
+      infoWindow.open(map);
       map.setCenter(pos);
       var yourLocoMarker = new google.maps.Marker({
               map:map,
@@ -393,14 +402,14 @@ function initMap() {
 
 
 function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  infoWindow.setPosition(pos);
-  infoWindow.setContent(browserHasGeolocation ?
-                        'Error: The Geolocation service failed.' :
-                        'Error: Your browser doesn\'t support geolocation.');
-  infoWindow.open(map);
-}
-        //infoWindow = new google.maps.InfoWindow;
+  // infoWindow.setPosition(pos);
+  // infoWindow.setContent(browserHasGeolocation ?
+  //                       'Error: The Geolocation service failed.' :
+  //                       'Error: Your browser doesn\'t support geolocation.');
+  // infoWindow.open(map);
 
+  //       infoWindow = new google.maps.InfoWindow;
+}
   // // Try HTML5 geolocation.
   // if (navigator.geolocation) {
   //   navigator.geolocation.getCurrentPosition(function(position) {
@@ -433,29 +442,42 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 
 //Geocoder function helps display place searched.
-        var geocoder = new google.maps.Geocoder();
-         // console.log("has map initialized yes")
         
-        document.getElementById('submit').addEventListener('click', function() {
+         // console.log("has map initialized yes")
+   
+      var geocoder = new google.maps.Geocoder(); 
+       $('body').on('click','#submit', function() {
           console.log("submit clicked");
           geocodeAddress(geocoder, map);
-        });
-      }
-    
+        }); 
+        }
+       // 
+       //  $('body').on('click','#submit', function() {
+       //    console.log("submit clicked");
+       //    geocodeAddress(geocoder, map);
+       //  }); 
+
       function geocodeAddress(geocoder, resultsMap) {
             deleteMarkers();
+            
         var address = document.getElementById('search').value;
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             resultsMap.setZoom(13);
+            console.log(results[0].geometry.location)
+          //var searchmap = new google.maps.Map($('#mapsarea'), {
+         // zoom: 13,
+         // center:resultsMap.setCenter(results[0].geometry.location)
+       // });
           var  searchedMarker = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location,
               title:address
             });
             markers.push(searchedMarker)
-          } else {
+          } 
+          else {
             alert('Geocode was not successful for the following reason: ' + status);
           }
         });
@@ -481,6 +503,8 @@ function deleteMarkers() {
   markers = [];
 }
 
+
+
 // ====================================================================================================================
 // Firebase.js
 // ====================================================================================================================
@@ -503,7 +527,7 @@ var userPassword;
 var uid;
 var currentUser;
 
-firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
   .then(function() {
     // Existing and future Auth states are now persisted in local storage. User must hit the sign out button to log out.
     // ...
@@ -539,7 +563,7 @@ $("#userLogin").on("click", function() {
 $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
-    $($(this).attr("data-target")).modal("show");
+    $("#signOut").modal("show");
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -549,7 +573,7 @@ $("#userLogOut").on("click", function() {
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-
+    $("#signIn").modal("show");
     currentUser = firebase.auth().currentUser;
     if (currentUser !== null) {
       email = currentUser.email;
@@ -588,9 +612,10 @@ $("#userSearches").on("click", "div", function() {
 $("#submit").on("click", function() {
   event.preventDefault();
   var search = $("#search").val().trim();
-  database.ref(uid + "/searches").push({
-    location: search,
-    dateAdded: firebase.database.ServerValue.TIMESTAMP
-  });
-
+  if (currentUser !== null) {
+    database.ref(uid + "/searches").push({
+      location: search,
+      dateAdded: firebase.database.ServerValue.TIMESTAMP
+    });
+  };
 })
