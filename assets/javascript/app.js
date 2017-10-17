@@ -484,7 +484,6 @@ messagingSenderId: "396436072298"
 firebase.initializeApp(config);
 
 var database = firebase.database();
-var userSearches = database.ref(uid + "/searches");
 
 // global variables
 var userEmail;
@@ -535,6 +534,10 @@ $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
     modal = 1;
+    $("#userEmail").show();
+    $("#userPassword").show();
+    $("#userCheckbox").show();
+    $("#userLogin").show();
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -548,6 +551,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (modal == 1) {
       $("#signIn").modal("show");
     };
+    $("#userEmail").hide();
+    $("#userPassword").hide();
+    $("#userCheckbox").hide();
+    $("#userLogin").hide();
     modal++;
     currentUser = firebase.auth().currentUser;
     if (currentUser !== null) {
@@ -560,13 +567,13 @@ firebase.auth().onAuthStateChanged(function(user) {
         if ($("#search").val().trim() !== "") {
           var search = $("#search").val().trim();
         };
-        userSearches.push({
+        database.ref(uid + "/searches").push({
           location: search,
           dateAdded: firebase.database.ServerValue.TIMESTAMP
         });
       });
       // Prepend to recent searches only the last five searches on reload
-      userSearches.orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+      database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
         $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
       });
     };
@@ -589,10 +596,5 @@ $("#userSearches").on("click", "div", function() {
   $("#search").val(search);
   $("#submit").trigger("click");
 });
-
-
-// ====================================================================================================================
-// Submit button function
-// ====================================================================================================================
 
 
