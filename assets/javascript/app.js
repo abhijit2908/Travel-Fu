@@ -363,7 +363,7 @@ function initMap() {
               title:"Initial Position"
             });
         markers.push(marker);
-        console.log("Initial Marker"+markers)
+     
         //Search Autocomplete Functionality
       var input = document.getElementById('search');
       var autocomplete = new google.maps.places.Autocomplete(input);
@@ -388,6 +388,7 @@ var infoWindow = new google.maps.InfoWindow;
               });
             infoWindow.open(map);
             map.setCenter(pos);
+            markers.push(yourLocoMarker);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -407,43 +408,41 @@ var infoWindow = new google.maps.InfoWindow;
 
 //Geocoder function helps display place searched.
         
-         // console.log("has map initialized yes")
+         
    
       var geocoder = new google.maps.Geocoder(); 
        $('body').on('click','#submit', function() {
-          console.log("submit clicked");
+         
           geocodeAddress(geocoder, map);
         }); 
         }
        // 
-       //  $('body').on('click','#submit', function() {
-       //    console.log("submit clicked");
-       //    geocodeAddress(geocoder, map);
-       //  }); 
+       //  
 
       function geocodeAddress(geocoder, resultsMap) {
-            deleteMarkers();
+            
             
         var address = document.getElementById('search').value;
+        deleteMarkers()
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
+            
             resultsMap.setCenter(results[0].geometry.location);
             resultsMap.setZoom(13);
-            console.log(results[0].geometry.location)
-          //var searchmap = new google.maps.Map($('#mapsarea'), {
-         // zoom: 13,
-         // center:resultsMap.setCenter(results[0].geometry.location)
-       // });
+            //console.log(results[0].geometry.location)
+
+              
           var  searchedMarker = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location,
               title:address
             });
+
             markers.push(searchedMarker)
           } 
           else {
             $('#myModal').modal("show");
-            //'Geocode was not successful for the following reason: ' + status
+            
           }
         });
       }
