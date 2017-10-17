@@ -10,7 +10,7 @@ var icnCounter = 0;
 
 $('body').on("click", "#submit",function(){
     emptyResults();
-    setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
+    //setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
     var buttonMsg = $("#buttons");
     buttonMsg.html("Choose the unit for the forecast");
 });
@@ -22,7 +22,7 @@ $('body').on("click", "#Celsius", function(){
     emptyResults();
     var units="metric";
     callWeatherAPI(units);
-    setTimeout(createButtons,500);
+    //setTimeout(createButtons,500);
 });
 
 
@@ -31,7 +31,7 @@ $('body').on("click", "#Fahrenheit", function(){
       emptyResults();
       var units="imperial";
       callWeatherAPI(units);
-      setTimeout(createButtons,500);
+      //setTimeout(createButtons,500);
 });
 
 
@@ -137,26 +137,26 @@ function displayWeather(weather){
 
 
 
-function createButtons(){
+// function createButtons(){
 
-      var buttons = $("#buttons");
+//       var buttons = $("#buttons");
 
-      var c = $("<button>");
-      c.addClass("btn btn-primary col-md-5");
-      c.height(40);
-      c.html("Celsius");
-      c.attr('id','Celsius');
-      buttons.append(c);
+//       var c = $("<button>");
+//       c.addClass("btn btn-success col-md-5");
+//       c.height(40);
+//       c.html("Celsius");
+//       c.attr('id','Celsius');
+//       buttons.append(c);
       
-      var f = $("<button>");
-      f.addClass("btn btn-primary col-md-5 col-md-offset-1");
-      f.height(40);
-      f.html("Fahrenheit");
-      f.attr('id','Fahrenheit');
-      buttons.append(f);
+//       var f = $("<button>");
+//       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
+//       f.height(40);
+//       f.html("Fahrenheit");
+//       f.attr('id','Fahrenheit');
+//       buttons.append(f);
 
 
-}
+// }
 
 // ====================================================================================================================
 // News.js
@@ -261,31 +261,39 @@ function getInfo(queryURL){
     url: queryURL,
     method: "GET"
   }).done(function(NYTData1) {
-    console.log(NYTData1);
-    for (var i = 0; i < numResults; i++) {
-      console.log(NYTData1.response.docs[i],i);
-      currentArr[i] = {
-        content:NYTData1.response.docs[i].headline.main,
-        section:NYTData1.response.docs[i].section_name,
-        date:NYTData1.response.docs[i].pub_date,
-        urll:NYTData1.response.docs[i].web_url
-      }
-      // console.log(typeof(NYTData1.response.docs[i].byline.original));
-      if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
-        if(NYTData1.response.docs[i].byline.original==null){
-          currentArr[i].by = 'By Unknown';
-        }else{
-          currentArr[i].by = NYTData1.response.docs[i].byline.original;
+    // console.log(NYTData1);
+    if(NYTData1.response.docs.length){
+      for (var i = 0; i < numResults; i++) {
+        // console.log(NYTData1.response.docs[i],i);
+        currentArr[i] = {
+          content:NYTData1.response.docs[i].headline.main,
+          section:NYTData1.response.docs[i].section_name,
+          date:NYTData1.response.docs[i].pub_date,
+          urll:NYTData1.response.docs[i].web_url
         }
-      }else{
-        currentArr[i].by = 'By Unknown';
+        // console.log(typeof(NYTData1.response.docs[i].byline.original));
+        if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
+          if(NYTData1.response.docs[i].byline.original==null){
+            currentArr[i].by = 'By Unknown';
+          }else{
+            currentArr[i].by = NYTData1.response.docs[i].byline.original;
+          }
+        }else{
+          currentArr[i].by = 'By Unknown';
+        }
+        // console.log(currentArr,'fdsf');
+        var numbers = $('<span>')
+        numbers.addClass('label label-primary');
+        numbers.attr('page',i);
+        numbers.text(i+1);
+        $('#pages').append(numbers);
       }
-      // console.log(currentArr,'fdsf');
-      var numbers = $('<span>')
-      numbers.addClass('label label-primary');
-      numbers.attr('page',i);
-      numbers.text(i+1);
-      $('#pages').append(numbers);
+    }else{
+      // console.log('temp')
+      currentArr = [];
+      currentArr[0] = {
+          content: 'Please Enter Valid City, State'
+      }
     }
     $('.label-primary').on('click',function(){
       $("#news-api").empty();
@@ -339,10 +347,7 @@ function runQuery() {
 // ====================================================================================================================
 // Maps.js
 // ====================================================================================================================
-$( document ).ready(function() {
-  $("#mapsarea").fadeIn(1000);
-  console.log("fadein")
-});
+
 
 var  map,searchmap;
 
@@ -482,18 +487,20 @@ messagingSenderId: "396436072298"
 firebase.initializeApp(config);
 
 var database = firebase.database();
+var userSearches = database.ref(uid + "/searches");
 
+// global variables
 var userEmail;
 var userPassword;
-var newUser = false;
+var uid;
+var currentUser;
+var modal;
 
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   .then(function() {
-    // Existing and future Auth states are now persisted in the current
-    // session only. Closing the window would clear any existing state even
-    // if a user forgets to sign out.
+    // Existing and future Auth states are now persisted in local storage. User must hit the sign out button to log out.
     // ...
-    // New sign-in will be persisted with session persistence.
+    // New sign-in will be persisted with local persistence.
     return firebase.auth().signInWithEmailAndPassword(email, password);
   })
   .catch(function(error) {
@@ -503,17 +510,22 @@ firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
   });
 
 $("#userLogin").on("click", function() {
+  // captures input email and password and clears those fields
   var email = $("#userEmail").val().trim();
   var password = $("#userPassword").val().trim();
   $("#userEmail").val("");
   $("#userPassword").val("");
+  modal = 1;
+  // checks if new user box is checked
   if ($("#newUser").is(":checked")) {
     $("#newUser").prop("checked", false);
+    // creates new user in firebase
     firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
     });
   } else {
+    // signs in user with correct email and password credentials
     firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -525,7 +537,7 @@ $("#userLogin").on("click", function() {
 $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
-    alert("Sign out successful");
+    modal = 1;
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -535,35 +547,55 @@ $("#userLogOut").on("click", function() {
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     // User is signed in.
-    alert("Sign in successful");
-    var currentUser = firebase.auth().currentUser;
-  if (currentUser !== null) {
-    email = currentUser.email;
-    uid = currentUser.uid;
-    $("#submit").on("click", function(event) {
-      event.preventDefault();
-      var search = $("#search").val().trim();
-      console.log(search);
-      database.ref(uid + "/searches").push({
-        location: search,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
+    // Only show modal on first sign in, not after every page refresh
+    if (modal == 1) {
+      $("#signIn").modal("show");
+    };
+    modal++;
+    currentUser = firebase.auth().currentUser;
+    if (currentUser !== null) {
+      email = currentUser.email;
+      uid = currentUser.uid;
+      // Display which user is logged in
+      $("#currentUser").html("<h5>Welcome: " + email + "</h5>");
+      $("#submit").on("click", function(event) {
+        event.preventDefault();
+        if ($("#search").val().trim() !== "") {
+          var search = $("#search").val().trim();
+        };
+        userSearches.push({
+          location: search,
+          dateAdded: firebase.database.ServerValue.TIMESTAMP
+        });
       });
-    });
-    
-    database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
-      $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
-    });
-    
-
-  };
+      // Prepend to recent searches only the last five searches on reload
+      userSearches.orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+        $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
+      });
+    };
   } else {
     // No user is signed in.
-    console.log("No one is signed in");
+    // Only show modal on first click
+    if (modal == 1) {
+      $("#signOut").modal("show");
+    };
+    modal++;
+    // clear all user data
+    $("#userSearches").empty();
+    $("#currentUser").empty();
   }
 });
 
+// User can click on recent searches to search again
 $("#userSearches").on("click", "div", function() {
   var search = $(this).text();
   $("#search").val(search);
   $("#submit").trigger("click");
 });
+
+
+// ====================================================================================================================
+// Submit button function
+// ====================================================================================================================
+
+

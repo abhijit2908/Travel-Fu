@@ -1,3 +1,4 @@
+
 body,.jumbotron{
 	background-image: url("../images/backphoto.jpeg");
 	background-repeat:no-repeat;
@@ -7,12 +8,17 @@ body,.jumbotron{
 }
 
 .label{
+
+
 	margin-right: 10px;
 	font-size: 150%;
 }
-.well{
-	text-align: center;
+.d3-effect {
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.5);
+    transition: 0.3s;
+    border-radius: 5px;
 }
+
 #mapsarea{
 height:300px;
 /*width:580px;*/
@@ -21,12 +27,11 @@ margin-bottom: 10px;
 margin-top: 10px;
 
 
-}
 
-#search{
+}
+#search {
 	width:505px;
 }
-
 #newUser {
 	float: left;
 	margin-right: 5px;
@@ -37,7 +42,7 @@ margin-top: 10px;
 #userLogOut {
 	float: right;
 }
-.panel-heading{
+.panel-heading {
 	display: flex;
 	align-items: center;
 }
