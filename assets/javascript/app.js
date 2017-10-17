@@ -572,6 +572,10 @@ $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
     modal = 1;
+    $("#userEmail").show();
+    $("#userPassword").show();
+    $("#userCheckbox").show();
+    $("#userLogin").show();
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -585,6 +589,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (modal == 1) {
       $("#signIn").modal("show");
     };
+    $("#userEmail").hide();
+    $("#userPassword").hide();
+    $("#userCheckbox").hide();
+    $("#userLogin").hide();
     modal++;
     currentUser = firebase.auth().currentUser;
     if (currentUser !== null) {
