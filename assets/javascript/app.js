@@ -60,7 +60,7 @@ function callWeatherAPI(units){
               method: "GET"
             })
             .done(function(response) {
-
+                    // console.log("Response is " + response);
                     createWeather(response);
             })
 
