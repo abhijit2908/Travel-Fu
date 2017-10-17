@@ -10,7 +10,7 @@ var icnCounter = 0;
 
 $('body').on("click", "#submit",function(){
     emptyResults();
-    setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
+    //setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
     var buttonMsg = $("#buttons");
     buttonMsg.html("Choose the unit for the forecast");
 });
@@ -22,7 +22,7 @@ $('body').on("click", "#Celsius", function(){
     emptyResults();
     var units="metric";
     callWeatherAPI(units);
-    setTimeout(createButtons,500);
+    //setTimeout(createButtons,500);
 });
 
 
@@ -31,7 +31,7 @@ $('body').on("click", "#Fahrenheit", function(){
       emptyResults();
       var units="imperial";
       callWeatherAPI(units);
-      setTimeout(createButtons,500);
+      //setTimeout(createButtons,500);
 });
 
 
@@ -372,74 +372,38 @@ var infoWindow = new google.maps.InfoWindow;
      
 
   // Try HTML5 geolocation.This allows maps to tell uesrs current location
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-      var pos = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      
-      infoWindow.setPosition(pos);
-      //infoWindow.setContent('Location found.');
-      infoWindow.open(map);
-      map.setCenter(pos);
-      var yourLocoMarker = new google.maps.Marker({
+   if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            deleteMarkers();
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('Location found.');
+            var yourLocoMarker = new google.maps.Marker({
               map:map,
               position:pos,
               title:"Your location"
               });
-         markers.push(yourLocoMarker);
-        console.log("yourLocoMarker"+markers)
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
       
-    }, function() {
-      handleLocationError(true, map.getCenter());
-    });
-    
-  } else {
-    // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
-  }
 
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-  // infoWindow.setPosition(pos);
-  // infoWindow.setContent(browserHasGeolocation ?
-  //                       'Error: The Geolocation service failed.' :
-  //                       'Error: Your browser doesn\'t support geolocation.');
-  // infoWindow.open(map);
-
-  //       infoWindow = new google.maps.InfoWindow;
-}
-  // // Try HTML5 geolocation.
-  // if (navigator.geolocation) {
-  //   navigator.geolocation.getCurrentPosition(function(position) {
-  //     var pos = {
-  //       lat: position.coords.latitude,
-  //       lng: position.coords.longitude
-  //     };
-
-  //     infoWindow.setPosition(pos);
-  //     infoWindow.setContent('Location found.');
-  //     infoWindow.open(map);
-  //     map.setCenter(pos);
-  //   }, function() {
-  //     handleLocationError(true, infoWindow, );
-      
-  //   });
-  // } else {
-  //   // Browser doesn't support Geolocation
-  //   handleLocationError(false, infoWindow, map.getCenter());
-  // }
-
-
-// function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-//   infoWindow.setPosition(pos);
-//   infoWindow.setContent(browserHasGeolocation ?
-//                         'Error: The Geolocation service failed.' :
-//                         'Error: Your browser doesn\'t support geolocation.');
-//   infoWindow.open(map);
-// }
-
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
 
 //Geocoder function helps display place searched.
         
@@ -478,7 +442,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
             markers.push(searchedMarker)
           } 
           else {
-            alert('Geocode was not successful for the following reason: ' + status);
+            $('#myModal').modal("show");
+            //'Geocode was not successful for the following reason: ' + status
           }
         });
       }
@@ -502,6 +467,7 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
+
 
 
 

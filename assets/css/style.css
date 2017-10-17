@@ -1,4 +1,15 @@
-.label {
+
+body,.jumbotron{
+	background-image: url("../images/backphoto.jpeg");
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-size: cover;
+
+}
+
+.label{
+
+
 	margin-right: 10px;
 	font-size: 150%;
 }
@@ -7,12 +18,16 @@
     transition: 0.3s;
     border-radius: 5px;
 }
-#mapsarea {
-	height:300px;
-	/*width:580px;*/
-	border:2px solid black;
-	margin-bottom: 10px;
-	margin-top: 10px;
+
+#mapsarea{
+height:300px;
+/*width:580px;*/
+border:2px solid black;
+margin-bottom: 10px;
+margin-top: 10px;
+
+
+
 }
 #search {
 	width:505px;
