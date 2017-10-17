@@ -339,7 +339,10 @@ function runQuery() {
 // ====================================================================================================================
 // Maps.js
 // ====================================================================================================================
-
+$( document ).ready(function() {
+  $("#mapsarea").fadeIn(1000);
+  console.log("fadein")
+});
 
 var  map,searchmap;
 
@@ -373,6 +376,11 @@ var infoWindow = new google.maps.InfoWindow;
             deleteMarkers();
             infoWindow.setPosition(pos);
             infoWindow.setContent('Location found.');
+            var yourLocoMarker = new google.maps.Marker({
+              map:map,
+              position:pos,
+              title:"Your location"
+              });
             infoWindow.open(map);
             map.setCenter(pos);
           }, function() {
@@ -454,6 +462,7 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
+
 
 
 
