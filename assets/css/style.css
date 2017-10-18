@@ -5,10 +5,12 @@ body,.jumbotron{
 	background-size: cover;
 
 }
-.jumbotron{
-	color:#00FFFF;
+
+#title {
+	color:white;
 	font-weight:bold;
-	
+	font-size: 100px;
+	text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 .page-size{
 	margin-right: 10px;
