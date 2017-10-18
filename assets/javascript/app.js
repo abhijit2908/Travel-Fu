@@ -1,7 +1,6 @@
 // Weather.js
 
 //global variables
-
 var temp;
 var location;
 var icon;
@@ -93,7 +92,6 @@ function displayWeather(weather){
 
 var authKey = "b9f91d369ff59547cd47b931d8cbc56b:0:74623931";
 
-// These variables will hold the results we get from the user's inputs via HTML
 var searchTerm = "";
 var numResults = 5;
 var calc = moment().format('L').split('/');
@@ -103,102 +101,150 @@ var week = calc2[2]+calc2[0]+calc2[1];;
 var calc3 = moment().subtract(29, 'days').calendar().split('/');
 var month = calc3[2]+calc3[0]+calc3[1];
 var currentArr = [];
-var newQueryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" +
-  authKey + "&q=";
+var newQueryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=" + authKey + "&q=";
 var articleCounter = 0;
-
+var long_short = true; 
+$('#layout').on('click',function(){
+  if(long_short){
+    $('#layout').text('Short');
+  }else{
+    $('#layout').text('Long');
+  }
+  long_short = !long_short;
+});
 $("#submit").on("click", function(event) {
   event.preventDefault();
   articleCounter = 0;
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
   getInfo(searchURL);
-  setTimeout(runQuery, 500);
+  if(!long_short){
+    setTimeout(runQuery, 500);
+  }
 });
-
+//-------------------------------
 $("#today").on("click", function(event) {
   event.preventDefault();
   articleCounter = 0;
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
   searchURL = searchURL + "&begin_date=" + day ;
   getInfo(searchURL);
-  setTimeout(runQuery, 500);
+  if(!long_short){
+    setTimeout(runQuery, 500);
+  };
 });
-
+//-------------------------------
 $("#seven").on("click", function(event) {
   event.preventDefault();
   articleCounter = 0;
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
-  var searchURL = newQueryURL + searchTerm;
-  searchURL = searchURL + "&begin_date=" + week;
-  searchURL = searchURL + "&end_date=" + day;
+  searchTerm = $("#search").val().trim().split(',')[0];
+  var searchURL = newQueryURL + searchTerm; 
+  searchURL = searchURL + "&begin_date=" + week +"&end_date=" + day ;
   getInfo(searchURL);
-  setTimeout(runQuery, 500);
+  if(!long_short){
+    setTimeout(runQuery, 500);
+  };
 });
 
+//-------------------------------
 $("#month").on("click", function(event) {
   event.preventDefault();
   articleCounter = 0;
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
-  searchURL = searchURL + "&begin_date=" + month ;
-  searchURL = searchURL + "&end_date=" + day;
+  searchURL = searchURL + "&begin_date=" + month + "&end_date=" + day;
   getInfo(searchURL);
-  setTimeout(runQuery, 500);
+  if(!long_short){
+    setTimeout(runQuery, 500);
+  };
 });
-
+//-------------------------------
 function getInfo(queryURL){
   $.ajax({
     url: queryURL,
     method: "GET"
   }).done(function(NYTData1) {
-    if(NYTData1.response.docs.length){
+    if (long_short){
       for (var i = 0; i < numResults; i++) {
-        currentArr[i] = {
-          content:NYTData1.response.docs[i].headline.main,
-          section:NYTData1.response.docs[i].section_name,
-          date:NYTData1.response.docs[i].pub_date,
-          urll:NYTData1.response.docs[i].web_url
-        };
-        if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
-          if(NYTData1.response.docs[i].byline.original==null){
-            currentArr[i].by = 'By Unknown';
-          }else{
-            currentArr[i].by = NYTData1.response.docs[i].byline.original;
-          }
-        }else{
-          currentArr[i].by = 'By Unknown';
-        };
-        var numbers = $('<span>')
-        numbers.addClass('label label-primary');
-        numbers.attr('page',i);
-        numbers.text(i+1);
-        $('#pages').append(numbers);
-      };
+        articleCounter++;
+        var wellSection = $("<div>");
+        wellSection.addClass("well");
+        wellSection.attr("id", "article-well-" + articleCounter);
+        $("#news-api").append(wellSection);
+
+        if (NYTData1.response.docs[i].headline !== "null") {
+          $("#article-well-" + articleCounter)
+          .append(
+            "<h3 class='articleHeadline'><span class='label label-primary'>" +
+            articleCounter + "</span><strong> " +
+            NYTData1.response.docs[i].headline.main + "</strong></h3>"
+            );
+
+        }
+
+        if (NYTData1.response.docs[i].byline && NYTData1.response.docs[i].byline.original) {
+          $("#article-well-" + articleCounter)
+          .append("<h5>" + NYTData1.response.docs[i].byline.original + "</h5>");
+
+        }
+
+        $("#article-well-" + articleCounter)
+        .append("<h5>Section: " + NYTData1.response.docs[i].section_name + "</h5>");
+        $("#article-well-" + articleCounter)
+        .append("<h5>" + NYTData1.response.docs[i].pub_date + "</h5>");
+        $("#article-well-" + articleCounter)
+        .append(
+          "<a href='" + NYTData1.response.docs[i].web_url + "'>" +
+          NYTData1.response.docs[i].web_url + "</a>"
+          );
+      }
     }else{
-      currentArr = [];
-      currentArr[0] = {
-        content: 'Please Enter Valid City, State'
+      if(NYTData1.response.docs.length){
+        for (var i = 0; i < numResults; i++) {
+          currentArr[i] = {
+            content:NYTData1.response.docs[i].headline.main,
+            section:NYTData1.response.docs[i].section_name,
+            date:NYTData1.response.docs[i].pub_date,
+            urll:NYTData1.response.docs[i].web_url
+          };
+          if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
+            if(NYTData1.response.docs[i].byline.original==null){
+              currentArr[i].by = 'By Unknown';
+            }else{
+              currentArr[i].by = NYTData1.response.docs[i].byline.original;
+            };
+          }else{
+            currentArr[i].by = 'By Unknown';
+          };
+          var numbers = $('<button>')
+          numbers.addClass('btn btn-default btn-primary btn-info page-size');
+          numbers.attr('page',i);
+          numbers.text(i+1);
+          $('#pages').append(numbers);
+        };
+      } else {
+        currentArr = [];
+        currentArr[0] = {
+          content: 'Please Enter Valid City, State'
+        };
       };
+      $('.label-primary').on('click',function(){
+        $("#news-api").empty();
+        articleCounter = this.getAttribute('page');
+        setTimeout(runQuery, 500);  
+      });
     };
-    $('.label-primary').on('click',function(){
-      $("#news-api").empty();
-      articleCounter = this.getAttribute('page');
-      setTimeout(runQuery, 500);
-      
-    });
   });
 };
-
 
 function runQuery() {
   var wellSection = $("<div>");
@@ -492,9 +538,9 @@ $("#userSearches").on("click", "a", function() {
 
 
 $(function() {
-  var $sidebar   = $("#sidebar"), 
-  var $window    = $(window),
-  var offset     = $sidebar.offset(),
+  var $sidebar   = $("#sidebar"); 
+  var $window    = $(window);
+  var offset     = $sidebar.offset();
   var topPadding = 15;
   $window.scroll(function() {
     if ($window.scrollTop() > offset.top) {
@@ -510,9 +556,9 @@ $(function() {
 });
 
 $(function() {
-  var $sidebar   = $("#sidebar2"), 
-  var $window    = $(window),
-  var offset     = $sidebar.offset(),
+  var $sidebar   = $("#sidebar2"); 
+  var $window    = $(window);
+  var offset     = $sidebar.offset();
   var topPadding = 95;
   $window.scroll(function() {
     if ($window.scrollTop() > offset.top) {
