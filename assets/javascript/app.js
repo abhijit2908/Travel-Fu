@@ -70,7 +70,7 @@ function callWeatherAPI(units){
 
 function createWeather(response){
 
-  //console.log(response);
+ console.log(response);
   // console.log("Forecast in " + response.city.name );
 
 
@@ -94,6 +94,8 @@ function createWeather(response){
             weather.description = response.list[i].weather[0].description;
             weather.icon = response.list[i].weather[0].icon;
 
+            console.log("Temp Min " + weather.temp_min);
+            console.log("Temp Max " + weather.temp_max);
             displayWeather(weather);
 
 
@@ -123,7 +125,7 @@ function displayWeather(weather){
 
   )
  
- $("#iconImg"+ icnCounter + "").append('<img src="http://openweathermap.org/img/w/'+ weather.icon + '.png">');
+ $("#iconImg"+ icnCounter + "").append('<img src="https://openweathermap.org/img/w/'+ weather.icon + '.png">');
 
  // console.log("icnCounter = " + icnCounter);
     icnCounter++;
