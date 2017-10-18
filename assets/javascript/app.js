@@ -1,7 +1,6 @@
 // Weather.js
 
 //global variables
-
 var temp;
 var location;
 var icon;
@@ -51,9 +50,10 @@ function emptyResults(){
 function callWeatherAPI(units){
    var APIKey = "166a433c57516f51dfab1f7edaed8413";
             var cityName = $("#search").val().trim();
-             
+     
+     //"https://api.openweathermap.org/data/2.5/forecast?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey;        
 
-            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey;
+            var queryURL = "https://api.openweathermap.org/data/2.5/forecast/daily?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey + "&cnt=5";
            
             $.getJSON({
               url: queryURL,
@@ -70,7 +70,7 @@ function callWeatherAPI(units){
 
 function createWeather(response){
 
-  // console.log(response);
+ console.log(response);
   // console.log("Forecast in " + response.city.name );
 
 
@@ -82,18 +82,20 @@ function createWeather(response){
 
 
 
-    for (var i = 0; i < 39; i= i+8) {
+    for (var i = 0; i < 5; i++) {
 
 
             var weather = {};
 
-            weather.date = moment(response.list[i].dt_txt).format("dddd, MMMM Do YYYY")
-            weather.temp = response.list[i].main.temp;
-            weather.temp_min = response.list[i].main.temp_min;
-            weather.temp_max = response.list[i].main.temp_max;
+            weather.date = moment.unix(response.list[i].dt).format("dddd, MMMM Do YYYY")
+            weather.temp = response.list[i].temp.day;
+            weather.temp_min = response.list[i].temp.min;
+            weather.temp_max = response.list[i].temp.max;
             weather.description = response.list[i].weather[0].description;
             weather.icon = response.list[i].weather[0].icon;
 
+            console.log("Temp Min " + weather.temp_min);
+            console.log("Temp Max " + weather.temp_max);
             displayWeather(weather);
 
 
@@ -123,7 +125,7 @@ function displayWeather(weather){
 
   )
  
- $("#iconImg"+ icnCounter + "").append('<img src="http://openweathermap.org/img/w/'+ weather.icon + '.png">');
+ $("#iconImg"+ icnCounter + "").append('<img src="https://openweathermap.org/img/w/'+ weather.icon + '.png">');
 
  // console.log("icnCounter = " + icnCounter);
     icnCounter++;
@@ -131,29 +133,6 @@ function displayWeather(weather){
 }
 
 
-
-
-
-// function createButtons(){
-
-//       var buttons = $("#buttons");
-
-//       var c = $("<button>");
-//       c.addClass("btn btn-success col-md-5");
-//       c.height(40);
-//       c.html("Celsius");
-//       c.attr('id','Celsius');
-//       buttons.append(c);
-      
-//       var f = $("<button>");
-//       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
-//       f.height(40);
-//       f.html("Fahrenheit");
-//       f.attr('id','Fahrenheit');
-//       buttons.append(f);
-
-
-// }
 
 // ====================================================================================================================
 // News.js
