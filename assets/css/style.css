@@ -1,4 +1,3 @@
-
 body,.jumbotron{
 	background-image: url("../images/backphoto.jpeg");
 	background-repeat:no-repeat;
@@ -6,10 +5,7 @@ body,.jumbotron{
 	background-size: cover;
 
 }
-
-.label{
-
-
+.page-size{
 	margin-right: 10px;
 	font-size: 150%;
 }
@@ -46,3 +42,4 @@ margin-top: 10px;
 	display: flex;
 	align-items: center;
 }
+
