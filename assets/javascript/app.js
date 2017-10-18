@@ -39,7 +39,7 @@ function emptyResults(){
 function callWeatherAPI(units){
   var APIKey = "166a433c57516f51dfab1f7edaed8413";
   var cityName = $("#search").val().trim();
-  var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey;   
+  var queryURL = "https://api.openweathermap.org/data/2.5/forecast/daily?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey + "&cnt=5";
   $.getJSON({
     url: queryURL,
     method: "GET"
@@ -52,23 +52,41 @@ function callWeatherAPI(units){
 
 function createWeather(response){
 
-  var location =$("#location");
-  location.html("<strong><h4> Forecast in " + response.city.name + "</h4></strong>" + "<br>");
-  location.css({ 'color': '#000000', 'font-size': '80%','font-family': 'calibri','background-color': '#b8a837', 'text-align': 'center'});
-  location.addClass("row col-md-10 col-md-offset-1");
 
-  for (var i = 0; i < 39; i= i+8) {
-    var weather = {};
-    weather.date = moment(response.list[i].dt_txt).format("dddd, MMMM Do YYYY")
-    weather.temp = response.list[i].main.temp;
-    weather.temp_min = response.list[i].main.temp_min;
-    weather.temp_max = response.list[i].main.temp_max;
-    weather.description = response.list[i].weather[0].description;
-    weather.icon = response.list[i].weather[0].icon;
-    displayWeather(weather);
-  };
+ //console.log(response);
+  // console.log("Forecast in " + response.city.name );
 
-};
+
+        var location =$("#location");
+        location.html("<strong><h4> Forecast in " + response.city.name + "</h4></strong>" + "<br>");
+        location.css({ 'color': '#000000', 'font-size': '80%','font-family': 'calibri', 'text-align': 'center'});
+        location.addClass("row col-md-10 col-md-offset-1");
+
+
+
+
+    for (var i = 0; i < 5; i++) {
+
+
+            var weather = {};
+
+            weather.date = moment.unix(response.list[i].dt).format("dddd, MMMM Do YYYY")
+            //weather.temp = response.list[i].temp.day;
+            weather.temp_min = response.list[i].temp.min;
+            weather.temp_max = response.list[i].temp.max;
+            weather.description = response.list[i].weather[0].description;
+            weather.icon = response.list[i].weather[0].icon;
+
+            console.log("Temp Min " + weather.temp_min);
+            console.log("Temp Max " + weather.temp_max);
+            displayWeather(weather);
+
+
+    }
+
+}
+
+
 
 function displayWeather(weather){
 
