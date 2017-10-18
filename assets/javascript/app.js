@@ -215,9 +215,8 @@ $("#seven").on("click", function(event) {
   $('#pages').empty();
   searchTerm = $("#search").val().trim();
   var searchURL = newQueryURL + searchTerm;
-  // console.log(week)
-  searchURL = searchURL + "&begin_date=" + week ;
-  searchURL = searchURL + "&end_date=" + day;
+  
+  searchURL = searchURL + "&begin_date=" + week +"&end_date=" + day ;
 
   getInfo(searchURL);
   if(!long_short){
@@ -236,9 +235,8 @@ $("#month").on("click", function(event) {
   $('#pages').empty();
   searchTerm = $("#search").val().trim();
   var searchURL = newQueryURL + searchTerm;
-  // console.log(month)
-  searchURL = searchURL + "&begin_date=" + month ;
-  searchURL = searchURL + "&end_date=" + day;
+  
+  searchURL = searchURL + "&begin_date=" + month + "&end_date=" + day;
 
   getInfo(searchURL);
   if(!long_short){
@@ -294,14 +292,14 @@ function getInfo(queryURL){
     }else{
       if(NYTData1.response.docs.length){
         for (var i = 0; i < numResults; i++) {
-        // console.log(NYTData1.response.docs[i],i);
+        
         currentArr[i] = {
           content:NYTData1.response.docs[i].headline.main,
           section:NYTData1.response.docs[i].section_name,
           date:NYTData1.response.docs[i].pub_date,
           urll:NYTData1.response.docs[i].web_url
         }
-        // console.log(typeof(NYTData1.response.docs[i].byline.original));
+        
         if(typeof(NYTData1.response.docs[i].byline)!=='undefined'){
           if(NYTData1.response.docs[i].byline.original==null){
             currentArr[i].by = 'By Unknown';
@@ -311,7 +309,7 @@ function getInfo(queryURL){
         }else{
           currentArr[i].by = 'By Unknown';
         }
-        // console.log(currentArr,'fdsf');
+        
         var numbers = $('<button>')
         numbers.addClass('btn btn-default btn-primary btn-info page-size');
         numbers.attr('page',i);
@@ -319,7 +317,7 @@ function getInfo(queryURL){
         $('#pages').append(numbers);
       }
     }else{
-      // console.log('temp')
+      
       currentArr = [];
       currentArr[0] = {
         content: 'Please Enter Valid City, State'
