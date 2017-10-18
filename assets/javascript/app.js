@@ -76,7 +76,7 @@ function createWeather(response){
 
         var location =$("#location");
         location.html("<strong><h4> Forecast in " + response.city.name + "</h4></strong>" + "<br>");
-        location.css({ 'color': '#000000', 'font-size': '80%','font-family': 'calibri','background-color': '#b8a837', 'text-align': 'center'});
+        location.css({ 'color': '#000000', 'font-size': '80%','font-family': 'calibri', 'text-align': 'center'});
         location.addClass("row col-md-10 col-md-offset-1");
 
 
