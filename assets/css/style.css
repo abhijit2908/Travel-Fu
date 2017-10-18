@@ -5,6 +5,11 @@ body,.jumbotron{
 	background-size: cover;
 
 }
+.jumbotron{
+	color:#00FFFF;
+	font-weight:bold;
+	
+}
 .page-size{
 	margin-right: 10px;
 	font-size: 150%;

@@ -1,7 +1,6 @@
 // Weather.js
 
 //global variables
-
 var temp;
 var location;
 var icon;
@@ -10,7 +9,6 @@ var icnCounter = 0;
 
 $('body').on("click", "#submit",function(){
     emptyResults();
-    //setTimeout(createButtons,500);//this is avoid showing the C and F buttons before the weather forecast appears
     var buttonMsg = $("#buttons");
     buttonMsg.html("Choose the unit for the forecast");
 });
@@ -22,7 +20,6 @@ $('body').on("click", "#Celsius", function(){
     emptyResults();
     var units="metric";
     callWeatherAPI(units);
-    //setTimeout(createButtons,500);
 });
 
 
@@ -31,7 +28,6 @@ $('body').on("click", "#Fahrenheit", function(){
       emptyResults();
       var units="imperial";
       callWeatherAPI(units);
-      //setTimeout(createButtons,500);
 });
 
 
@@ -54,16 +50,17 @@ function emptyResults(){
 function callWeatherAPI(units){
    var APIKey = "166a433c57516f51dfab1f7edaed8413";
             var cityName = $("#search").val().trim();
-             
+     
+     //"https://api.openweathermap.org/data/2.5/forecast?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey;        
 
-            var queryURL = "https://api.openweathermap.org/data/2.5/forecast?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey;
+            var queryURL = "https://api.openweathermap.org/data/2.5/forecast/daily?" + "q=" + cityName + "&units=" + units + "&mode=json&appid=" + APIKey + "&cnt=5";
            
             $.getJSON({
               url: queryURL,
               method: "GET"
             })
             .done(function(response) {
-
+                    // console.log("Response is " + response);
                     createWeather(response);
             })
 
@@ -73,7 +70,7 @@ function callWeatherAPI(units){
 
 function createWeather(response){
 
-  // console.log(response);
+ console.log(response);
   // console.log("Forecast in " + response.city.name );
 
 
@@ -85,18 +82,20 @@ function createWeather(response){
 
 
 
-    for (var i = 0; i < 39; i= i+8) {
+    for (var i = 0; i < 5; i++) {
 
 
             var weather = {};
 
-            weather.date = moment(response.list[i].dt_txt).format("dddd, MMMM Do YYYY")
-            weather.temp = response.list[i].main.temp;
-            weather.temp_min = response.list[i].main.temp_min;
-            weather.temp_max = response.list[i].main.temp_max;
+            weather.date = moment.unix(response.list[i].dt).format("dddd, MMMM Do YYYY")
+            weather.temp = response.list[i].temp.day;
+            weather.temp_min = response.list[i].temp.min;
+            weather.temp_max = response.list[i].temp.max;
             weather.description = response.list[i].weather[0].description;
             weather.icon = response.list[i].weather[0].icon;
 
+            console.log("Temp Min " + weather.temp_min);
+            console.log("Temp Max " + weather.temp_max);
             displayWeather(weather);
 
 
@@ -126,7 +125,7 @@ function displayWeather(weather){
 
   )
  
- $("#iconImg"+ icnCounter + "").append('<img src="http://openweathermap.org/img/w/'+ weather.icon + '.png">');
+ $("#iconImg"+ icnCounter + "").append('<img src="https://openweathermap.org/img/w/'+ weather.icon + '.png">');
 
  // console.log("icnCounter = " + icnCounter);
     icnCounter++;
@@ -134,29 +133,6 @@ function displayWeather(weather){
 }
 
 
-
-
-
-// function createButtons(){
-
-//       var buttons = $("#buttons");
-
-//       var c = $("<button>");
-//       c.addClass("btn btn-success col-md-5");
-//       c.height(40);
-//       c.html("Celsius");
-//       c.attr('id','Celsius');
-//       buttons.append(c);
-      
-//       var f = $("<button>");
-//       f.addClass("btn btn-primary col-md-5 col-md-offset-1");
-//       f.height(40);
-//       f.html("Fahrenheit");
-//       f.attr('id','Fahrenheit');
-//       buttons.append(f);
-
-
-// }
 
 // ====================================================================================================================
 // News.js
@@ -416,7 +392,7 @@ function initMap() {
               title:"Initial Position"
             });
         markers.push(marker);
-        console.log("Initial Marker"+markers)
+     
         //Search Autocomplete Functionality
       var input = document.getElementById('search');
       var autocomplete = new google.maps.places.Autocomplete(input);
@@ -441,6 +417,7 @@ var infoWindow = new google.maps.InfoWindow;
               });
             infoWindow.open(map);
             map.setCenter(pos);
+            markers.push(yourLocoMarker);
           }, function() {
             handleLocationError(true, infoWindow, map.getCenter());
           });
@@ -460,43 +437,41 @@ var infoWindow = new google.maps.InfoWindow;
 
 //Geocoder function helps display place searched.
         
-         // console.log("has map initialized yes")
+         
    
       var geocoder = new google.maps.Geocoder(); 
        $('body').on('click','#submit', function() {
-          console.log("submit clicked");
+         
           geocodeAddress(geocoder, map);
         }); 
         }
        // 
-       //  $('body').on('click','#submit', function() {
-       //    console.log("submit clicked");
-       //    geocodeAddress(geocoder, map);
-       //  }); 
+       //  
 
       function geocodeAddress(geocoder, resultsMap) {
-            deleteMarkers();
+            
             
         var address = document.getElementById('search').value;
+        deleteMarkers()
         geocoder.geocode({'address': address}, function(results, status) {
           if (status === 'OK') {
+            
             resultsMap.setCenter(results[0].geometry.location);
             resultsMap.setZoom(13);
-            console.log(results[0].geometry.location)
-          //var searchmap = new google.maps.Map($('#mapsarea'), {
-         // zoom: 13,
-         // center:resultsMap.setCenter(results[0].geometry.location)
-       // });
+            //console.log(results[0].geometry.location)
+
+              
           var  searchedMarker = new google.maps.Marker({
               map: resultsMap,
               position: results[0].geometry.location,
               title:address
             });
+
             markers.push(searchedMarker)
           } 
           else {
             $('#myModal').modal("show");
-            //'Geocode was not successful for the following reason: ' + status
+            
           }
         });
       }
@@ -540,7 +515,6 @@ messagingSenderId: "396436072298"
 firebase.initializeApp(config);
 
 var database = firebase.database();
-var userSearches = database.ref(uid + "/searches");
 
 // global variables
 var userEmail;
@@ -591,6 +565,10 @@ $("#userLogOut").on("click", function() {
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
     modal = 1;
+    $("#userEmail").show();
+    $("#userPassword").show();
+    $("#userCheckbox").show();
+    $("#userLogin").show();
   }).catch(function(error) {
     // An error happened.
     console.log("Error.");
@@ -604,6 +582,10 @@ firebase.auth().onAuthStateChanged(function(user) {
     if (modal == 1) {
       $("#signIn").modal("show");
     };
+    $("#userEmail").hide();
+    $("#userPassword").hide();
+    $("#userCheckbox").hide();
+    $("#userLogin").hide();
     modal++;
     currentUser = firebase.auth().currentUser;
     if (currentUser !== null) {
@@ -616,13 +598,13 @@ firebase.auth().onAuthStateChanged(function(user) {
         if ($("#search").val().trim() !== "") {
           var search = $("#search").val().trim();
         };
-        userSearches.push({
+        database.ref(uid + "/searches").push({
           location: search,
           dateAdded: firebase.database.ServerValue.TIMESTAMP
         });
       });
       // Prepend to recent searches only the last five searches on reload
-      userSearches.orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
+      database.ref(uid + "/searches").orderByChild("dateAdded").limitToLast(5).on("child_added", function(snapshot) {
         $("#userSearches").prepend("<div>" + snapshot.val().location + "</div><br>");
       });
     };
@@ -647,8 +629,50 @@ $("#userSearches").on("click", "div", function() {
 });
 
 
-// ====================================================================================================================
-// Submit button function
-// ====================================================================================================================
+// ===========================================================================================================================
+// Fixed sidebars
+// ===========================================================================================================================
 
+
+$(function() {
+
+    var $sidebar   = $("#sidebar"), 
+        $window    = $(window),
+        offset     = $sidebar.offset(),
+        topPadding = 15;
+
+    $window.scroll(function() {
+        if ($window.scrollTop() > offset.top) {
+            $sidebar.stop().animate({
+                marginTop: $window.scrollTop() - offset.top + topPadding
+            });
+        } else {
+            $sidebar.stop().animate({
+                marginTop: 0
+            });
+        }
+    });
+    
+});
+
+$(function() {
+
+    var $sidebar   = $("#sidebar2"), 
+        $window    = $(window),
+        offset     = $sidebar.offset(),
+        topPadding = 95;
+
+    $window.scroll(function() {
+        if ($window.scrollTop() > offset.top) {
+            $sidebar.stop().animate({
+                marginTop: $window.scrollTop() - offset.top + topPadding
+            });
+        } else {
+            $sidebar.stop().animate({
+                marginTop: 0
+            });
+        }
+    });
+    
+});
 
