@@ -178,7 +178,7 @@ $("#submit").on("click", function(event) {
 
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
   getInfo(searchURL);
   if(!long_short){
@@ -194,7 +194,7 @@ $("#today").on("click", function(event) {
 
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
 
   searchURL = searchURL + "&begin_date=" + day ;
@@ -213,7 +213,7 @@ $("#seven").on("click", function(event) {
 
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
   
   searchURL = searchURL + "&begin_date=" + week +"&end_date=" + day ;
@@ -233,7 +233,7 @@ $("#month").on("click", function(event) {
 
   $("#news-api").empty();
   $('#pages').empty();
-  searchTerm = $("#search").val().trim();
+  searchTerm = $("#search").val().trim().split(',')[0];
   var searchURL = newQueryURL + searchTerm;
   
   searchURL = searchURL + "&begin_date=" + month + "&end_date=" + day;
