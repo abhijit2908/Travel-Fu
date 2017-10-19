@@ -76,9 +76,6 @@ function createWeather(response){
             weather.temp_max = response.list[i].temp.max;
             weather.description = response.list[i].weather[0].description;
             weather.icon = response.list[i].weather[0].icon;
-
-            console.log("Temp Min " + weather.temp_min);
-            console.log("Temp Max " + weather.temp_max);
             displayWeather(weather);
 
 
@@ -255,10 +252,10 @@ function getInfo(queryURL){
           content: 'Please Enter Valid City, State'
         };
       };
-      $('.label-primary').on('click',function(){
+      $('.page-size').on('click',function(){
         $("#news-api").empty();
         articleCounter = this.getAttribute('page');
-        setTimeout(runQuery, 500);  
+        setTimeout(runQuery, 700);  
       });
     };
   });
